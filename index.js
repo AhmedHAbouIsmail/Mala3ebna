@@ -1,4 +1,4 @@
-//const {Client} = require('pg')
+
 const express = require ("express")
 const app = express();
 app.use(express.json())
@@ -24,30 +24,14 @@ app.get("/location", async (req, res) => {
     
     res.send(JSON.stringify(rows))
 })
-// app.get("/ballavailable", async (req, res) => {
-//     const results = await client.query("select  name,ballavailable from mala3eb");
-//     const rows =   results.rows;
-    
-//     res.send(JSON.stringify(rows))
-// })
+
 app.get("/price", async (req, res) => {
     const results = await client.query("select  name,price from mala3ebna");
     const rows =   results.rows;
     
     res.send(JSON.stringify(rows))
 })
-// app.get("/size", async (req, res) => {
-//     const results = await client.query("select  name,size from mala3eb");
-//     const rows =   results.rows;
-    
-//     res.send(JSON.stringify(rows))
-// })
-// app.get("/telephone", async (req, res) => {
-//     const results = await client.query("select  name,telephone from mala3eb");
-//     const rows =   results.rows;
-    
-//     res.send(JSON.stringify(rows))
-// })
+
 
 app.get("/time/:timeneeded", async (req, res) => {
     var timeneeded = req.params.timeneeded
@@ -104,12 +88,3 @@ app.get("/time/reserve/:n/:timeneeded1", async (req, res) => {
           console.error(`Failed to connect ${e}`)
       }
   }
-/*async function readmala3eb() {
-    try {
-    const results = await client.query("select * from mala3eb");
-    return results.rows;
-    }
-    catch(e){
-        return [];
-    }
-}*/
