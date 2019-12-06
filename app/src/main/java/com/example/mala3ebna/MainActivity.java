@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         signIn=findViewById(R.id.sign_in_button);
+        signIn.setSize(SignInButton.SIZE_STANDARD);
         signIn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -41,10 +44,20 @@ public class MainActivity extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(GoogleSignIn.getLastSignedInAccount(this)!=null) {
+            startActivity(new Intent(MainActivity.this, SecondActivity.class));
+        }
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
