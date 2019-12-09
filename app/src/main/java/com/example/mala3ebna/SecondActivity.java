@@ -28,7 +28,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 
@@ -36,8 +36,10 @@ public class SecondActivity extends AppCompatActivity {
 
     TextView name;
     GoogleSignInClient mGoogleSignInClient;
-    String[] print={"Zoser", "Nile", "Narmar"};
+    ArrayList<String> print= new ArrayList<>();
     Button signout;
+    ListView listView;
+    ArrayAdapter aa ;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,34 +61,35 @@ public class SecondActivity extends AppCompatActivity {
             String personName = acct.getDisplayName();
             name.setText("Welcome "+ personName);
         }
-//        final RequestQueue queue = Volley.newRequestQueue(this);
-//        String url ="";
-//// Request a string response from the provided URL.
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                new Response.Listener<String>() {
-//                    @Override
-//                    public void onResponse(String response) {
-//                        try {
-//                            JSONObject jsonResult = new JSONObject(response);
-//                            JSONArray data = jsonResult.getJSONArray("data");
-//                            if(data != null) {
-//                                for(int i = 0 ; i < data.length() ; i++) {
-//
-//                                    print.add(data.getJSONObject(i).getString("datetime")+" "+ data.getJSONObject(i).getString("temp"));
-//                                }
-//                            }
-//                        }
-//                        catch(Exception e) {}
-//                    }
-//                }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//
-//            }
-//        });
-//        queue.add(stringRequest);
-        ListView listView = findViewById(R.id.listView);
-        ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),R.layout.listelement,print);
+        listView = findViewById(R.id.listView);
+        aa = new ArrayAdapter(getApplicationContext(),R.layout.listelement,print);
+       final RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://192.168.43.174:4000/name";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray data = new JSONArray(response);
+                            if(data != null)
+                                //   print[i]=data.getJSONObject(i).getString("name");
+                                for(int i = 0 ; i < data.length(); i++)
+                                    try {
+                                        print.add(data.getJSONObject(i).getString("name"));
+                                        aa.notifyDataSetChanged();
+                                    } catch (JSONException e){}
+                        }
+                        catch(Exception e) {
+                            System.out.println(e);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println(error);
+            }
+        });
+        queue.add(stringRequest);
         listView.setAdapter(aa);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
@@ -99,6 +102,8 @@ public class SecondActivity extends AppCompatActivity {
             }
         });
     }
+
+
     private void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
