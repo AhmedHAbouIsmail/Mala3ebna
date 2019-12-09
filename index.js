@@ -18,6 +18,14 @@ app.get("/name", async (req, res) => {
     res.send(JSON.stringify(rows))
 })
 
+app.get("/name/:name", async (req, res) => {
+    var name = req.params.name;
+    const results = await client.query("select * from mala3ebna where name = '"+name+"' ");
+    const rows =   results.rows;
+    
+    res.send(JSON.stringify(rows))
+})
+
 app.get("/location", async (req, res) => {
     const results = await client.query("select name,location from mala3ebna");
     const rows =   results.rows;
