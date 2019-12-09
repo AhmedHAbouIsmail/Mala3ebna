@@ -86,7 +86,7 @@ public class ThirdActivity extends AppCompatActivity {
             }
         });
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.43.174:4000/name/"+pitch;
+        String url ="http://192.168.43.110:4000/name/"+pitch;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -120,7 +120,7 @@ public class ThirdActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url ="http://192.168.43.174:4000/time/reserve/"+pitch+"/"+selected;
+                String url ="http://192.168.43.110:4000/time/reserve/"+pitch+"/"+selected;
 
 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

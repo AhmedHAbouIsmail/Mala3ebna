@@ -64,7 +64,7 @@ public class SecondActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         aa = new ArrayAdapter(getApplicationContext(),R.layout.listelement,print);
        final RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://192.168.43.174:4000/name";
+        String url ="http://192.168.43.110:4000/name";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
